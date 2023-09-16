@@ -5,10 +5,18 @@ import useOutsideClick from "../../hooks/useOutsideClick";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 import { DateRange } from "react-date-range";
+import {
+  createSearchParams,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 
 function Header() {
+  let [searchParams, setSearchParams] = useSearchParams();
   // getting the destination from userSearchField
-  const [destination, setDestination] = useState("");
+  const [destination, setDestination] = useState(
+    searchParams.get("destination") || ""
+  );
 
   // toggling the guest options list
   const [isShow, setIsShow] = useState(false);
@@ -30,6 +38,11 @@ function Header() {
     key: "selection",
   });
 
+  //
+
+  // navigation user
+  const navigate = useNavigate();
+
   // handler to increment and decrement of options state
   const optionHandler = (name, operation) => {
     setOptions((prevOption) => {
@@ -37,6 +50,18 @@ function Header() {
         ...prevOption,
         [name]: operation === "inc" ? options[name] + 1 : options[name] - 1,
       };
+    });
+  };
+
+  const searchHandler = () => {
+    const params = createSearchParams({
+      date: JSON.stringify(date),
+      destination,
+      options: JSON.stringify(options),
+    });
+    navigate({
+      pathname: "/hotels",
+      search: params.toString(),
     });
   };
 
@@ -94,7 +119,7 @@ function Header() {
           <span className="separator"></span>
         </div>
         <div className="headerSearchItem">
-          <button className="headerSearchBtn">
+          <button className="headerSearchBtn" onClick={searchHandler}>
             <HiSearch className="headerIcon" />
           </button>
         </div>
