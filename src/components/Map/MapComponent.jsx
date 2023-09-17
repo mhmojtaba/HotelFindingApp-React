@@ -2,25 +2,26 @@ import { Marker, Popup, useMap, useMapEvents } from "react-leaflet";
 import { MapContainer } from "react-leaflet/MapContainer";
 import { TileLayer } from "react-leaflet/TileLayer";
 import Loader from "../Loader/Loader";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useLocation from "../../hooks/useLocation";
+import useUrlLatLng from "../../hooks/useUrlLatLng";
 
 function MapComponent({ markerPosition, isMapLoading }) {
-  const [searchParams] = useSearchParams();
   const [mapCenter, setMapCenter] = useState([32.7, 51.7]);
-
+  const [lat, lng] = useUrlLatLng();
+  // const [searchParams] = useSearchParams();
   // const lat = searchParams.get("lat");
   // const lng = searchParams.get("lng");
-  // console.log(coords[0]);
+  // console.log(lat, lng);
 
   const { isLoading: isGettingPosition, position, getPosition } = useLocation();
 
   // getting the position coords of params
   useEffect(() => {
-    const coords = [searchParams.get("lat"), searchParams.get("lng")];
+    const coords = [lat, lng];
     if (coords[0] && coords[1]) setMapCenter(coords);
-  }, [searchParams]);
+  }, [lat, lng]);
 
   // console.log(position);
 

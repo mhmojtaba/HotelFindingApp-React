@@ -23,6 +23,19 @@ function BookmarkProvider({ children }) {
     }
   }
 
+  async function postNewBookmark(newBookmark) {
+    try {
+      setIsCurrentBookmarkLoading(true);
+      const { data } = await axios.post(`${BASE_URL}/bookmarks/`, newBookmark);
+      setCurrentBookmark(data);
+      setIsCurrentBookmarkLoading(false);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsCurrentBookmarkLoading(false);
+    }
+  }
+
   return (
     <BookmarkContext.Provider
       value={{
@@ -31,6 +44,7 @@ function BookmarkProvider({ children }) {
         isCurrentBookmarkLoading,
         currentBookmark,
         getCurrentBookmark,
+        postNewBookmark,
       }}
     >
       {children}

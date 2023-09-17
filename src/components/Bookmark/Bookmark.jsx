@@ -8,7 +8,7 @@ function Bookmark() {
   //   console.log(bookmarks);
   if (isLoading) <Loader />;
   return (
-    <div className="searchList">
+    <div className="">
       <h2>Bookmark Results - {bookmarks.length}</h2>
       <div className="bookmarkList">
         {bookmarks.map((item) => {
