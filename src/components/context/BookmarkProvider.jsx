@@ -1,38 +1,65 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import useFetch from "../../hooks/useFetch";
 
 const BASE_URL = "http://localhost:5000";
 const BookmarkContext = createContext();
 
 function BookmarkProvider({ children }) {
-  const [isCurrentBookmarkLoading, setIsCurrentBookmarkLoading] =
-    useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [currentBookmark, setCurrentBookmark] = useState({});
-  const { data: bookmarks, isLoading } = useFetch(`${BASE_URL}/bookmarks`);
+  const [bookmarks, setBookmarks] = useState([]);
+
+  useEffect(() => {
+    async function getBookmarks() {
+      try {
+        setIsLoading(true);
+        const { data } = await axios.get(`${BASE_URL}/bookmarks`);
+        setBookmarks(data);
+      } catch (error) {
+        toast.error(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    getBookmarks();
+  }, []);
 
   async function getCurrentBookmark(id) {
     try {
-      setIsCurrentBookmarkLoading(true);
+      setIsLoading(true);
       const { data } = await axios.get(`${BASE_URL}/bookmarks/${id}`);
       setCurrentBookmark(data);
-      setIsCurrentBookmarkLoading(true);
     } catch (error) {
       toast.error(error.message);
+    } finally {
+      setIsLoading(false);
     }
   }
 
   async function postNewBookmark(newBookmark) {
     try {
-      setIsCurrentBookmarkLoading(true);
+      setIsLoading(true);
       const { data } = await axios.post(`${BASE_URL}/bookmarks/`, newBookmark);
       setCurrentBookmark(data);
-      setIsCurrentBookmarkLoading(false);
+      setBookmarks((prev) => [...prev, data]);
     } catch (error) {
       toast.error(error.message);
     } finally {
-      setIsCurrentBookmarkLoading(false);
+      setIsLoading(false);
+    }
+  }
+
+  async function deleteBookmark(id) {
+    try {
+      setIsLoading(true);
+      await axios.delete(`${BASE_URL}/bookmarks/${id}`);
+      setBookmarks((prev) => prev.filter((item) => item.id !== id));
+      // setCurrentBookmark(data);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -41,10 +68,10 @@ function BookmarkProvider({ children }) {
       value={{
         bookmarks,
         isLoading,
-        isCurrentBookmarkLoading,
         currentBookmark,
         getCurrentBookmark,
         postNewBookmark,
+        deleteBookmark,
       }}
     >
       {children}
