@@ -8,7 +8,7 @@ function Login() {
   const { isAuthenticated, login } = useAuth();
   const navigate = useNavigate();
 
-  console.log(isAuthenticated);
+  // console.log(isAuthenticated);
 
   useEffect(() => {
     if (isAuthenticated) navigate("/", { replace: true });

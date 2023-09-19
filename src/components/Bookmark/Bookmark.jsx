@@ -21,7 +21,7 @@ function Bookmark() {
   if (!bookmarks.length) return <strong>There is no Bookmark</strong>;
 
   return (
-    <div className="">
+    <div className="bookmark">
       <h2>Bookmark Results - {bookmarks.length}</h2>
       <div className="bookmarkList ">
         {bookmarks.map((item) => {
@@ -35,7 +35,7 @@ function Bookmark() {
                   item.id === currentBookmark.id ? "current-bookmark" : ""
                 }`}
               >
-                <div>
+                <div className="bookmark-country">
                   <ReactCountryFlag countryCode={item.countryCode} svg />
                   &nbsp;<strong>{item.cityName}</strong>&nbsp;
                   <span>{item.country}</span>

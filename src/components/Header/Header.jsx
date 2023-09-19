@@ -18,6 +18,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import { useAuth } from "../context/AuthProvider";
+import { RiMenuUnfoldFill } from "react-icons/ri";
 
 function Header() {
   let [searchParams] = useSearchParams();
@@ -45,6 +46,12 @@ function Header() {
     endDate: new Date(),
     key: "selection",
   });
+
+  const [showNavbar, setShowNavbar] = useState(false);
+
+  const handleShowNavbar = () => {
+    setShowNavbar(!showNavbar);
+  };
 
   //
 
@@ -78,59 +85,64 @@ function Header() {
 
   return (
     <div className="header">
-      <NavLink to="/bookmark">Bookmarks</NavLink>
-      <div className="headerSearch">
-        <div className="headerSearchItem">
-          <MdLocationOn className="headerIcon locationIcon" />
-          <input
-            type="text"
-            placeholder="Where to go?"
-            className="headerSearchInput"
-            name="destination"
-            id="destination"
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
-          />
-          <span className="separator"></span>
-        </div>
-        <div className="headerSearchItem" ref={dateRef}>
-          <HiCalendar className="headerIcon dateIcon" />
-          <div
-            id="dateDropDown"
-            className="dateDropDown"
-            onClick={() => setIsDateOpen((prev) => !prev)}
-          >
-            {`${date.startDate.toLocaleDateString()} to ${date.endDate.toLocaleDateString()}`}
-          </div>
-          {isDateOpen && (
-            <DateRange
-              ranges={[date]}
-              className="date"
-              onChange={(item) => setDate(item.selection)}
-              minDate={new Date()}
-              moveRangeOnFirstSelection={true}
+      <div className="menu-icon" onClick={handleShowNavbar}>
+        <RiMenuUnfoldFill className="mobileIcon" />
+      </div>
+      <div className={`nav-elements  ${showNavbar && "active"}`}>
+        <NavLink to="/bookmark">Bookmarks</NavLink>
+        <div className="headerSearch">
+          <div className="headerSearchItem">
+            <MdLocationOn className="headerIcon locationIcon" />
+            <input
+              type="text"
+              placeholder="Where to go?"
+              className="headerSearchInput"
+              name="destination"
+              id="destination"
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
             />
-          )}
-          <span className="separator"></span>
-        </div>
-        <div className="headerSearchItem">
-          <div id="optionDropDown" onClick={() => setIsShow((prev) => !prev)}>
-            {options.adult} adult &bull; {options.children} children &bull;
-            {options.room} room
+            <span className="separator"></span>
           </div>
-          {isShow && (
-            <GuestOptionList
-              options={options}
-              setIsShow={setIsShow}
-              optionHandler={optionHandler}
-            />
-          )}
-          <span className="separator"></span>
-        </div>
-        <div className="headerSearchItem">
-          <button className="headerSearchBtn" onClick={searchHandler}>
-            <HiSearch className="headerIcon" />
-          </button>
+          <div className="headerSearchItem" ref={dateRef}>
+            <HiCalendar className="headerIcon dateIcon" />
+            <div
+              id="dateDropDown"
+              className="dateDropDown"
+              onClick={() => setIsDateOpen((prev) => !prev)}
+            >
+              {`${date.startDate.toLocaleDateString()} to ${date.endDate.toLocaleDateString()}`}
+            </div>
+            {isDateOpen && (
+              <DateRange
+                ranges={[date]}
+                className="date"
+                onChange={(item) => setDate(item.selection)}
+                minDate={new Date()}
+                moveRangeOnFirstSelection={true}
+              />
+            )}
+            <span className="separator"></span>
+          </div>
+          <div className="headerSearchItem">
+            <div id="optionDropDown" onClick={() => setIsShow((prev) => !prev)}>
+              {options.adult} adult &bull; {options.children} children &bull;
+              {options.room} room
+            </div>
+            {isShow && (
+              <GuestOptionList
+                options={options}
+                setIsShow={setIsShow}
+                optionHandler={optionHandler}
+              />
+            )}
+            <span className="separator"></span>
+          </div>
+          <div className="headerSearchItem">
+            <button className="headerSearchBtn" onClick={searchHandler}>
+              <HiSearch className="headerIcon" />
+            </button>
+          </div>
         </div>
       </div>
       <User />
