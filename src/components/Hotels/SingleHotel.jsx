@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import Loader from "../Loader/Loader";
-import { useHotel } from "../context/HotelProvider";
 import { useEffect } from "react";
+import { useHotel } from "../context/HotelProvider";
 
 function SingleHotel() {
   const { id } = useParams();
@@ -13,7 +13,7 @@ function SingleHotel() {
 
   useEffect(() => {
     getCurrentHotel(id);
-  }, [id]);
+  }, [id, getCurrentHotel]);
 
   if (isCurrentHotelLoading) <Loader />;
   return (
