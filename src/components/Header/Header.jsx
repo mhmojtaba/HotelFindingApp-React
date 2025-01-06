@@ -89,6 +89,7 @@ function Header() {
         <RiMenuUnfoldFill className="mobileIcon" />
       </div>
       <div className={`nav-elements  ${showNavbar && "active"}`}>
+        <NavLink to="/">Home</NavLink>
         <NavLink to="/bookmark">Bookmarks</NavLink>
         <div className="headerSearch">
           <div className="headerSearchItem">
