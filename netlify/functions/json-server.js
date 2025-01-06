@@ -1,18 +1,22 @@
 import jsonServer from "json-server";
+import { fileURLToPath } from "url";
+import path from "path";
 import serverless from "serverless-http";
 
+// Create the server
 const server = jsonServer.create();
-const router = jsonServer.router("server/db.json"); // Path to your db.json file
 const middlewares = jsonServer.defaults();
 
-// Use default middlewares (e.g., CORS, body-parsing, etc.)
+// Get the absolute path to `db.json`
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const router = jsonServer.router(path.join(__dirname, "../../server/db.json"));
+
+// Use middlewares
 server.use(middlewares);
 
-// Add custom routes here if needed
-// server.get('/custom-route', (req, res) => res.json({ message: 'Hello World' }));
-
-// Mount the router
+// Use the router
 server.use(router);
 
-// Wrap json-server as a Netlify serverless function
+// Export the serverless handler
 export const handler = serverless(server);

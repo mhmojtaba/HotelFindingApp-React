@@ -7,3 +7,7 @@
   from = "/api/*"
   to = "/.netlify/functions/json-server"
   status = 200
+
+[functions]
+  included_files = ["server/db.json"]
+
