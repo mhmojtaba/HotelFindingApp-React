@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import Loader from "../Loader/Loader";
 import ReactCountryFlag from "react-country-flag";
 import { useBookmark } from "../context/BookmarkProvider";
+import BackButton from "../BackButton/BackButton";
 
 const BASE_URL_REVERSEGEOCODE =
   "https://api.bigdatacloud.net/data/reverse-geocode";
@@ -89,15 +90,7 @@ function AddBookmark() {
           <ReactCountryFlag className="flag" svg countryCode={countryCode} />
         </div>
         <div className="buttons">
-          <button
-            className="btn btn--back"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate(-1);
-            }}
-          >
-            &larr; Back
-          </button>
+          <BackButton />
           <button className="btn btn--primary">Add &rarr;</button>
         </div>
       </form>
